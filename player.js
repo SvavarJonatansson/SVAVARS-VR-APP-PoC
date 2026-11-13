@@ -211,6 +211,7 @@ document.addEventListener('visibilitychange', reportPresence);
 // ---------- Boot ----------
 video.src = VIDEO_URL;
 video.addEventListener('error', () => setState('error', 'video could not load'));
+video.loop = true; // the sample clip is only a few seconds long
 video.addEventListener('ended', () => { sphere.visible = false; setState('idle'); });
 
 ensureSignedIn($('login'), async (session) => {

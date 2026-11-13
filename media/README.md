@@ -1,0 +1,1 @@
+`test-pano.webm`: sample 360° panorama video from the three.js examples (https://github.com/mrdoob/three.js, MIT licence, © three.js authors). Low resolution (1920x1080, VP8, a few seconds): only for testing remote control, not picture quality. Replace with a real clip hosted on Cloudflare R2.
