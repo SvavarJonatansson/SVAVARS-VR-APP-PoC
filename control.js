@@ -48,13 +48,30 @@ async function watch(id) {
     .subscribe());
 
   const presence = supabase.channel(presenceChannelName(id), {
-    config: { presence: { key: `carer-${crypto.randomUUID()}` } },
+    config: { presence: { key: `carer-${crypto.randomUUID()}`, enabled: true } },
   });
+  // Two signals: presence (instant join/leave) and a 5-second heartbeat as backup.
+  let fromPresence = null;
+  let fromBeat = null;
+  let beatAt = 0;
+  const refresh = () => {
+    const beatFresh = Date.now() - beatAt < 12000;
+    setOnline(fromPresence || (beatFresh ? fromBeat : null));
+  };
   presence.on('presence', { event: 'sync' }, () => {
     const metas = presence.presenceState().headset;
-    setOnline(metas && metas.length ? metas[metas.length - 1] : null);
+    fromPresence = metas && metas.length ? metas[metas.length - 1] : null;
+    refresh();
+  });
+  presence.on('broadcast', { event: 'status' }, ({ payload }) => {
+    fromBeat = payload;
+    beatAt = Date.now();
+    if (fromPresence) fromPresence = payload; // keep position and state fresh
+    refresh();
   });
   presence.subscribe();
+  clearInterval(watch.timer);
+  watch.timer = setInterval(refresh, 3000);
   channels.push(presence);
 }
 

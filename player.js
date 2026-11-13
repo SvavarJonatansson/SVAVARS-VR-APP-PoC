@@ -54,14 +54,18 @@ function setState(next, error = null) {
 
 function reportPresence() {
   if (!presence) return;
-  presence.track({
+  const status = {
     role: 'headset',
     state,
     error: lastError,
     position_s: Math.round(video.currentTime || 0),
     in_vr: renderer.xr.isPresenting,
     at: new Date().toISOString(),
-  });
+  };
+  presence.track(status).catch((e) => console.warn('presence track failed', e));
+  // Heartbeat as a second signal, in case presence is not delivered.
+  presence.send({ type: 'broadcast', event: 'status', payload: status })
+    .catch((e) => console.warn('heartbeat failed', e));
 }
 setInterval(reportPresence, 5000); // keeps the playback position fresh on the phone
 
@@ -168,8 +172,9 @@ function listen() {
     });
 
   presence = supabase.channel(presenceChannelName(headset.id), {
-    config: { presence: { key: 'headset' } },
+    config: { presence: { key: 'headset', enabled: true }, broadcast: { self: false } },
   });
+  presence.on('presence', { event: 'sync' }, () => {});
   presence.subscribe((s) => {
     if (s === 'SUBSCRIBED') {
       statusEl.textContent = `Status: ${state} · online`;
