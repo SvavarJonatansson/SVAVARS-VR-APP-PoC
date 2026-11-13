@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SVAVARS VR APP — Headset</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#101418" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="headset">
+  <main class="card">
+    <h1>SVAVARS VR APP</h1>
+    <p class="sub">Headset player</p>
+
+    <form id="login" hidden>
+      <p>Sign in once with this headset's own login.</p>
+      <input name="email" type="email" placeholder="Headset email" autocomplete="username" required />
+      <input name="password" type="password" placeholder="Password" autocomplete="current-password" required />
+      <button type="submit">Sign in</button>
+      <p class="msg"></p>
+    </form>
+
+    <section id="ready" hidden>
+      <p id="headset-name" class="name"></p>
+      <button id="start" class="big">Start</button>
+      <p class="hint">Put the headset on the resident, then tap Start. Everything else is controlled from the carer's phone.</p>
+      <p id="status" class="status">Connecting…</p>
+    </section>
+  </main>
+
+  <video id="video" crossorigin="anonymous" playsinline preload="auto" hidden></video>
+  <script type="module" src="player.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SVAVARS VR APP — Carer control</title>
+  <meta name="theme-color" content="#101418" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="control">
+  <main class="card">
+    <h1>SVAVARS VR APP</h1>
+    <p class="sub">Carer control (proof of concept)</p>
+
+    <form id="login" hidden>
+      <input name="email" type="email" placeholder="Carer email" autocomplete="username" required />
+      <input name="password" type="password" placeholder="Password" autocomplete="current-password" required />
+      <button type="submit">Sign in</button>
+      <p class="msg"></p>
+    </form>
+
+    <section id="panel" hidden>
+      <label>Headset
+        <select id="headset"></select>
+      </label>
+      <p class="live"><span id="dot" class="dot off"></span> <span id="online">Offline</span> · <span id="state">–</span></p>
+
+      <div class="buttons">
+        <button data-cmd="play">Play</button>
+        <button data-cmd="pause">Pause</button>
+        <button data-cmd="resume">Resume</button>
+        <button data-cmd="stop">Stop</button>
+        <button data-cmd="recenter">Recenter</button>
+      </div>
+
+      <h2>Recent commands</h2>
+      <table>
+        <thead><tr><th>Time</th><th>Command</th><th>Status</th><th>ms</th></tr></thead>
+        <tbody id="log"></tbody>
+      </table>
+      <button id="signout" class="link">Sign out</button>
+    </section>
+  </main>
+  <script type="module" src="control.js"></script>
+</body>
+</html>
